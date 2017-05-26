@@ -1,0 +1,14 @@
+<RCC>
+    <qresource prefix="/image">
+        <file>image/analysis64.png</file>
+        <file>image/free64.png</file>
+        <file>image/analysis64_1.png</file>
+        <file>image/analysis64_2.png</file>
+        <file>image/free64_1.png</file>
+        <file>image/free64_2.png</file>
+        <file>image/main.ico</file>
+        <file>image/about-1.png</file>
+        <file>image/about-2.png</file>
+        <file>image/about.png</file>
+    </qresource>
+</RCC>
