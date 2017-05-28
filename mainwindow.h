@@ -10,7 +10,7 @@
 #include "netprotocol.h"
 #include "aboutbox.h"
 
-#define SHOWNUMPPAGE 100
+#define SHOWNUMPPAGE 500
 
 namespace Ui {
 class MainWindow;
@@ -80,6 +80,7 @@ private:
     void updateTableWidget(bool flag);
     /** 更改页码，若更改成功（即与原来当前页码不同），返回true */
     bool setCurPageNum(int num);
+    void updateTableWidgetWidth();
 
 };
 

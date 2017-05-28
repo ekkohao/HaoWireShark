@@ -197,14 +197,18 @@ bool PcapCommon::startShark(QString filter)
     connect(mSharkQThread,SIGNAL(sendErrorMsgSig(QString)),this,SLOT(on_receivedErrorMsgSlot(QString)));
 
     mSharkQThread->start();
-    return true;
+    return mSharkQThread->isRunning();
 
 }
 
 void PcapCommon::stopShark()
 {
-    if(mSharkQThread->isRunning())
+    if(mSharkQThread != nullptr) {
         mSharkQThread->quitThread();
+        mSharkQThread->wait();
+        delete mSharkQThread;
+        mSharkQThread = nullptr;
+    }
 }
 
 SharkQThread *PcapCommon::getSharkQThread()

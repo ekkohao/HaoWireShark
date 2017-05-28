@@ -54,7 +54,7 @@ bool SharkQThread::init()
     char * filterCS = bytearray.data();
     // 编译过滤器
     if(pcap_compile(mHandle, &fcode, filterCS, 1, host2netl(ipnormal2net(mHost.netmask.toLocal8Bit().data()))) < 0){
-        emit sendErrorMsgSig("Unable to compile the packet filter. Check the syntax.");
+        //emit sendErrorMsgSig("Unable to compile the packet filter. Check the syntax.");
         emit sharkStatusSig(-1,QString(tr("过滤语法错误！")));
         quitThread();
         // 释放设备列表
@@ -85,7 +85,7 @@ void SharkQThread::filterStart()
 
     while (mIsRuning) {
         if ((res = pcap_next_ex(adhandle, &pktHeader, &pktData)) >= 0) {
-            //qDebug() << "has bag!!!";
+            qDebug() << "has bag!!!";
             strData.clear();
 
             char tt[4];
@@ -163,7 +163,7 @@ void SharkQThread::filterStart()
             }
         }
         // 接收缓冲下，会间歇性丢包
-        usleep(100000);
+        usleep(10000);
     }
 }
 

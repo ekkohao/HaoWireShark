@@ -23,16 +23,10 @@ MainWindow::MainWindow(QWidget *parent) :
     tableHeader<<"TIME"<<"PROTOCOL"<<"SOURCE"<<"DESTINATION"<<"SIZE"<<"";
     ui->tableWidgetBags->setHorizontalHeaderLabels(tableHeader);
     ui->tableWidgetBags->horizontalHeader()->setStretchLastSection(true);
-    ui->tableWidgetBags->horizontalHeader()->setSectionResizeMode(0,QHeaderView::ResizeToContents);
-    ui->tableWidgetBags->horizontalHeader()->setSectionResizeMode(1,QHeaderView::ResizeToContents);
-    ui->tableWidgetBags->horizontalHeader()->setSectionResizeMode(2,QHeaderView::ResizeToContents);
-    ui->tableWidgetBags->horizontalHeader()->setSectionResizeMode(3,QHeaderView::ResizeToContents);
-    ui->tableWidgetBags->horizontalHeader()->setSectionResizeMode(4,QHeaderView::ResizeToContents);
     ui->tableWidgetBags->setSelectionBehavior(QAbstractItemView::SelectRows);
     ui->tableWidgetBags->setSelectionMode(QAbstractItemView::SingleSelection);
     ui->tableWidgetBags->setEditTriggers(QAbstractItemView::NoEditTriggers);
     ui->stackedWidget->setCurrentIndex(0);
-
     ui->tableWidgetBags->setContextMenuPolicy(Qt::CustomContextMenu);
     popTableMenu = new QMenu(ui->tableWidgetBags);
     popTableAction = new QAction("分析此数据包",this);
@@ -45,18 +39,21 @@ MainWindow::MainWindow(QWidget *parent) :
     this->connect(ui->tableWidgetBags,SIGNAL(cellClicked(int,int)),this,SLOT(on_tableItemClicked(int,int)));
     this->connect(popTableAction, SIGNAL(triggered()), this, SLOT(itemRightClickedOperationSlot()));
     this->connect(pcap,SIGNAL(sendErrorMsgSig(QString)),this,SLOT(on_receivedErrorMsg(QString)));
+    updateTableWidgetWidth();
 }
 
 MainWindow::~MainWindow()
 {
-    if(ui->pushButtonStartShark->text() == "停止捕获")
-        pcap->stopShark();
+    //if(ui->pushButtonStartShark->text() == "停止捕获")
+     //   pcap->stopShark();
     delete popTableMenu;
+
     delete popTableAction;
     delete ui;
     delete mAboutBox;
-    while(pcap->getSharkQThread()->isRunning()){}
-    delete pcap;
+    pcap->stopShark();
+    //while(pcap->getSharkQThread()->isRunning()){}
+    pcap->deleteLater();//QObject 如果在父程序析构中delete需要这样做
 
 }
 
@@ -109,8 +106,8 @@ void MainWindow::updateTableWidget(bool flag)
             ui->tableWidgetBags->setItem(row,i,new QTableWidgetItem(dataList.at(i)));
         if(ui->checkBoxLiveShark->isChecked() && ui->pushButtonStartShark->text() == "停止捕获")
             ui->tableWidgetBags->scrollToBottom();
-        else
-            repaint();
+        //else if(index % 3 == 0)
+        //    repaint();
         ++index;
     }
 }
@@ -126,6 +123,15 @@ bool MainWindow::setCurPageNum(int num)
         return true;
     }
     return false;
+}
+
+void MainWindow::updateTableWidgetWidth()
+{
+    ui->tableWidgetBags->setColumnWidth(0,100);
+    ui->tableWidgetBags->setColumnWidth(1,110);
+    ui->tableWidgetBags->setColumnWidth(2,350);
+    ui->tableWidgetBags->setColumnWidth(3,350);
+    ui->tableWidgetBags->setColumnWidth(4,90);
 }
 
 void MainWindow::on_pushButtonOpenAdapter_clicked()
@@ -205,7 +211,8 @@ void MainWindow::sharkStatusSlot(int num, QString msg)
         ui->pushButtonStartShark->setEnabled(true);
         ui->pushButtonStartShark->setText("停止捕获");
     }
-    msg = msg;
+    else if(num < 0)
+        on_receivedErrorMsg(msg);
 }
 
 void MainWindow::sharkQThreadAlreadyStopedSlot()

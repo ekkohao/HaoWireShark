@@ -307,7 +307,7 @@ class ICMPV6Bag {
 public:
     ICMPV6Bag();
     ICMPV6Bag(QString data);
-    setData(QString data);
+    void setData(QString data);
     QString getBagType();
     QString getInfoType();
     QString getCode();

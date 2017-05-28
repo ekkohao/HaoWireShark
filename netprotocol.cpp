@@ -1052,7 +1052,7 @@ ICMPV6Bag::ICMPV6Bag(QString data)
     this->mData = data;
 }
 
-ICMPV6Bag::setData(QString data)
+void ICMPV6Bag::setData(QString data)
 {
     this->mData = data;
 }

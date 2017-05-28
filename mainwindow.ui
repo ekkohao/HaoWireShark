@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1212</width>
-    <height>663</height>
+    <height>692</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -235,7 +235,7 @@ TCP/IP课程作业1</string>
        <number>0</number>
       </property>
       <widget class="QWidget" name="page">
-       <layout class="QVBoxLayout" name="verticalLayout_3">
+       <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0,0,0,0,10,0,0">
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_3">
           <item>
@@ -1235,6 +1235,12 @@ QPushButton:disabled{
         </item>
         <item>
          <widget class="QTableWidget" name="tableWidgetBags">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>150</height>
+           </size>
+          </property>
           <property name="autoFillBackground">
            <bool>false</bool>
           </property>

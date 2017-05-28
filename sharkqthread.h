@@ -19,6 +19,7 @@ class SharkQThread : public QThread
         void quitThread();
         void preStartThread(const HostInfo &host, pcap_t *handle, QString filter);
         bool mIsRuning;
+
       private:
           bool init();
           void filterStart();
